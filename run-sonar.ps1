@@ -1,0 +1,1 @@
+sonar-scanner.bat -D"sonar.projectKey=CKMusicBot" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=sqp_2c833cbb7329fb907f723e373837b9008f088e79"

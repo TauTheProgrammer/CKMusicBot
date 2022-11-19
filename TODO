@@ -1,0 +1,14 @@
+1.========================================================================================================================
+https://one.newrelic.com/nr1-core?account=3695315&duration=1800000&state=6cf2d25f-a8f4-b266-ee24-c48cb027a8b8
+To run with newrelic APM
+NEW_RELIC_CONFIG_FILE=newrelic.ini newrelic-admin run-program
+$YOUR_COMMAND_OPTIONS
+
+2.========================================================================================================================
+Consider https://prometheus.io/download/ for APM
+
+3.========================================================================================================================
+Look into controlling cache https://discordpy.readthedocs.io/en/stable/intents.html#member-cache
+
+4.========================================================================================================================
+In discord dev portal, disable bots gateway prescence slider to false
