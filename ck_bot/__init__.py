@@ -1,6 +1,6 @@
 import logging
 
-from ckmusicbot.utils.color_formatter import ColorFormatter
+from .utils.color_formatter import ColorFormatter
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()

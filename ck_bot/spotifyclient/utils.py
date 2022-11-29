@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ckmusicbot.utils.types import SpotifyQuery
+from ck_bot.utils.types import SpotifyQuery
 
 
 class SpotifyQueryBuilder:

@@ -4,7 +4,7 @@ import logging
 from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 from spotipy.client import Spotify
-from ckmusicbot.utils.types import SpotifyQuery
+from ck_bot.utils.types import SpotifyQuery
 
 logger = logging.getLogger(__name__)
 
