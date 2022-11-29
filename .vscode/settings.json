@@ -1,23 +1,19 @@
 {
-    "python.analysis.autoImportCompletions": true,
-    "python.analysis.completeFunctionParens": true,
-    "python.analysis.diagnosticMode": "workspace",
-    "python.analysis.inlayHints.functionReturnTypes": true,
-    "python.analysis.inlayHints.variableTypes": true,
-    "python.analysis.logLevel": "Trace",
-    "python.analysis.typeCheckingMode": "basic",
-    "python.formatting.provider": "black",
-    "python.languageServer": "Pylance",
-    "python.linting.pylintEnabled": true,
-    "python.terminal.activateEnvInCurrentTerminal": true,
-    "sonarlint.connectedMode.project": {
-        "connectionId": "CKMusicBot",
-        "projectKey": "CKMusicBot"
-    },
-<<<<<<< HEAD
-    "python.linting.mypyEnabled": true,
-    "editor.renderWhitespace": "all"
-=======
-    "python.linting.mypyEnabled": true
->>>>>>> 6798619918860b6ff4ab529b813dbd3ca39bf6f0
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.variableTypes": true,
+  "python.analysis.logLevel": "Trace",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.formatting.provider": "black",
+  "python.languageServer": "Pylance",
+  "python.linting.pylintEnabled": true,
+  "python.terminal.activateEnvInCurrentTerminal": true,
+  "sonarlint.connectedMode.project": {
+    "connectionId": "CKMusicBot",
+    "projectKey": "CKMusicBot"
+  },
+  "python.linting.mypyEnabled": false,
+  "editor.renderWhitespace": "all"
 }

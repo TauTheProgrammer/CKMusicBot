@@ -1,4 +1,4 @@
-# Cool Kids Bot
+# Cool Kids Slash Bot
 
 A Discord bot, written in Python, for my friends and I to use for fun stuff.
 
