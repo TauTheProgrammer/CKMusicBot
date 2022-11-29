@@ -4,7 +4,7 @@ from typing import NamedTuple
 
 class ListEnum(Enum):
     @classmethod
-    def toList(cls):
+    def to_list(cls):
         return list(map(lambda c: c.value, cls))
 
 

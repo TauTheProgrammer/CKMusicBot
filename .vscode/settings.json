@@ -9,5 +9,11 @@
     "python.formatting.provider": "black",
     "python.languageServer": "Pylance",
     "python.linting.pylintEnabled": true,
-    "python.terminal.activateEnvInCurrentTerminal": true
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "sonarlint.connectedMode.project": {
+        "connectionId": "CKMusicBot",
+        "projectKey": "CKMusicBot"
+    },
+    "python.linting.mypyEnabled": true,
+    "editor.renderWhitespace": "all"
 }

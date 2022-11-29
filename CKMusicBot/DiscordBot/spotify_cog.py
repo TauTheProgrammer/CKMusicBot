@@ -1,11 +1,11 @@
 from __future__ import annotations
 import logging
 from typing import Optional, Any
-from discord.ext.commands import Cog, hybrid_command, Context
+from discord.ext.commands import Cog, hybrid_command, Context, hybrid_group
 from discord.app_commands import describe, guilds
 from ..utils.constants import CK_GUILD
-from ..SpotifyClient.client import CKSpotifyClient
-from ..SpotifyClient.utils import SpotifyQueryBuilder
+from ..spotifyclient.client import CKSpotifyClient
+from ..spotifyclient.utils import SpotifyQueryBuilder
 
 _log = logging.getLogger(__name__)
 
@@ -20,32 +20,45 @@ class SpotifyCog(Cog):
             cls._spotify_client = CKSpotifyClient()
         return cls._instance
 
-    @hybrid_command(
-        description="Play a Song, Album, Playlist, Episode, Link, whatever!"
+    @hybrid_group(
+        name="play", description="Play a Song, Album, or Link!", fallback="hello?"
     )
-    @describe(
-        artist="Artist name",
-        album="Album name",
-        track="Track name",
-        link="Copied link",
-    )
-    @guilds(CK_GUILD)
-    async def play(
-        self,
-        ctx: Context,
-        track: str,
-        artist: Optional[str],
-        album: Optional[str],
-        link: Optional[str],
-    ) -> None:
-        # TODO: handle link
-        query_builder: SpotifyQueryBuilder = SpotifyQueryBuilder(track).add_limit(1)
-        if artist:
-            query_builder.with_artist(artist)
-        if album:
-            query_builder.with_album(album)
-        self._spotify_client.search(query_builder.build())
-        _log.info("Play called")
+    async def play(self, ctx: Context, track: str):
+        await ctx.send("Play Track " + track)
+
+    @play.command()
+    async def album(self, ctx: Context, album: str):
+        await ctx.send("Play album " + album)
+
+    @play.command()
+    async def link(self, ctx: Context, link: str):
+        await ctx.send("Play link " + link)
+
+    # @hybrid_command(
+    #     description="Play a Song, Album, Playlist, Episode, Link, whatever!"
+    # )
+    # @describe(
+    #     track="Track name",
+    #     artist="Artist name",
+    #     link="Copied link",
+    # )
+    # @guilds(CK_GUILD)
+    # async def play(
+    #     self,
+    #     ctx: Context,
+    #     track: str,
+    #     artist: Optional[str],
+    #     album: Optional[str],
+    #     link: Optional[str],
+    # ) -> None:
+    #     # TODO: handle link
+    #     query_builder: SpotifyQueryBuilder = SpotifyQueryBuilder(track).add_limit(1)
+    #     if artist:
+    #         query_builder.with_artist(artist)
+    #     if album:
+    #         query_builder.with_album(album)
+    #     self._spotify_client.search(query_builder.build())
+    #     _log.info("Play called")
 
     @hybrid_command(description="Skip whatever is currently playing")
     @guilds(CK_GUILD)

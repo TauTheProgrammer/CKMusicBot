@@ -1,14 +1,12 @@
 from __future__ import annotations
 import os
 import logging
-from typing import Any, List, Mapping, Self
+from typing import Any, List, Mapping
 from discord.ext.commands.bot import Bot, Context
 from discord.ext.commands import Cog
-from discord.interactions import Interaction
-from discord import Message, AppInfo, Intents
-from discord.types.interactions import InteractionData
+from discord import AppInfo, Intents
 from dotenv import load_dotenv
-from CKMusicBot.utils.color_formatter import ColorFormatter
+from ..utils.color_formatter import ColorFormatter
 from ..utils.constants import CK_GUILD, CK_BOT_CHANNEL_ID
 from .discord_cog import DiscordCog
 from .spotify_cog import SpotifyCog
@@ -21,7 +19,7 @@ class DiscordBot(Bot):
     _instance = None
     _synced: bool = False
 
-    def __new__(cls) -> Self:
+    def __new__(cls):
         if cls._instance is None:
             cls._instance = super(DiscordBot, cls).__new__(cls)
         return cls._instance
@@ -56,25 +54,18 @@ class DiscordBot(Bot):
             await self.tree.sync(guild=CK_GUILD)
             self._synced = True
 
-    async def on_message(self, message: Message) -> None:
-        _log.info("Message received from {%s}: {%s}", message.author, message.content)
-        return await super().on_message(message)
-
     def dispatch(self, event_name: str, /, *args: Any, **kwargs: Any) -> None:
-        if (
-            args
-            and isinstance(type(args[0]), Context)
-            and isinstance(args[0].interaction, Interaction)
-            and args[0].interaction.data is not None
-        ):
-            ctx: Context = args[0]
-            # data: InteractionData = args[0].interaction.data
-            # _log.info("Command {%s} invoked with args: %s", ctx.command.name, reduce(lambda a, b: a + ", {key}: {value}".format(key: str =b.), data))  # type: ignore
-
+        # if (
+        #     event_name == "command"
+        #     and args
+        #     and isinstance(args[0], Context)
+        #     and isinstance(args[0].interaction, Interaction)
+        # ):
+        # TODO: log command names and arguments/values
         super().dispatch(event_name, *args, **kwargs)
 
-    def run(self) -> Self:
-        client_token: str | None = os.getenv("CLIENT_TOKEN")
+    def run(self):
+        client_token = os.getenv("CLIENT_TOKEN")
         if client_token is None:
             raise TypeError("Discord bot token undefined")
         super().run(
@@ -83,7 +74,6 @@ class DiscordBot(Bot):
             log_formatter=ColorFormatter(),
             log_level=logging.DEBUG,
         )
-        return self
 
     async def ensure_application_configuration(self) -> None:
         application_info: AppInfo = await self.application_info()

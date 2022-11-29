@@ -12,3 +12,6 @@ Look into controlling cache https://discordpy.readthedocs.io/en/stable/intents.h
 
 4.========================================================================================================================
 In discord dev portal, disable bots gateway prescence slider to false
+
+5.==========================
+Look into pydoc for auto-generating python documentation
