@@ -1,17 +1,12 @@
 from __future__ import annotations
 import logging
-from typing import Any, Self, Union
-from discord.ext.commands import Cog, GroupCog, hybrid_command, Context
-from discord.app_commands import guilds
 from discord.voice_client import VoiceClient
 from discord.channel import VoiceChannel
-from discord.member import VoiceState
-from discord import Member, app_commands, Interaction, User, Message
+from discord import Member, app_commands, Interaction
 
 from ck_bot.cogs.base_cog import BaseCog
-from ..utils.constants import CK_GUILD
 
-_log = logging.getLogger(__name__)
+__log = logging.getLogger(__name__)
 
 
 class VoiceChannelCog(BaseCog):
@@ -19,31 +14,26 @@ class VoiceChannelCog(BaseCog):
 
     @app_commands.command(name="join", description="Join voice channel")
     async def join(self, interaction: Interaction) -> None:
-        _log.info("")
+        __log.info("Join called")
+        if len(self._bot.voice_clients) == 0:
+            member: Member = interaction.user  # type: ignore
+            if member.voice is None:
+                await interaction.response.send_message(
+                    "You must first join a voice channel", ephemeral=True
+                )
+            else:
+                voice_channel: VoiceChannel = member.voice.channel  # type: ignore
+                await voice_channel.connect()
+        else:
+            await interaction.response.send_message(
+                "I am already in another voice channel", ephemeral=True
+            )
 
-    @app_commands.command(name="leave", description="Leav voice channel")
+    @app_commands.command(name="leave", description="Leave voice channel")
     async def leave(self, interaction: Interaction) -> None:
-        _log.info("")
-
-    # @hybrid_command(description="Join voice channel(must be in a voice channel)")
-    # @guilds(CK_GUILD)
-    # async def join(self, ctx: Context) -> None:
-    #     # TODO get rid of join and auto-join on play/insert/etc
-    #     # TODO Log parameters and more specific relevant data
-    #     _log.info("Join called")
-    #     if isinstance(ctx.author, Member) and ctx.author.voice is None:
-    #         await ctx.reply("You must first join a voice channel", ephemeral=True)
-    #     elif (
-    #         isinstance(ctx.author, Member)
-    #         and isinstance(ctx.author.voice, VoiceState)
-    #         and isinstance(ctx.author.voice.channel, VoiceChannel)
-    #     ):
-    #         _log.info("Joining voice channel {%s}", ctx.author.voice.channel.name)
-    #         await ctx.author.voice.channel.connect()
-
-    # @hybrid_command(description="Leave voice channel")
-    # @guilds(CK_GUILD)
-    # async def quit(self, ctx: Context) -> None:
-    #     _log.info("Quit called")
-    #     if isinstance(ctx.voice_client, VoiceClient):
-    #         await ctx.voice_client.disconnect()
+        __log.info("Leave called")
+        if len(self._bot.voice_clients) != 0:
+            voice_client: VoiceClient = self._bot.voice_clients[0]  # type: ignore
+            await voice_client.disconnect()
+        else:
+            await interaction.response.send_message("I am not in a voice channel")

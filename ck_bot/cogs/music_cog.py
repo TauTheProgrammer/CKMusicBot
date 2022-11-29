@@ -16,12 +16,12 @@ from ..utils.constants import CK_GUILD
 from ..spotify.client import CKSpotifyClient
 from ..spotify.utils import SpotifyQueryBuilder
 
-_log = logging.getLogger(__name__)
+__log = logging.getLogger(__name__)
 
 
 class MusicCog(BaseCog):
-    def test(self) -> None:
-        _log.info("")
+
+    
 
     # @hybrid_command(
     #     description="Play a Song, Album, Playlist, Episode, Link, whatever!"

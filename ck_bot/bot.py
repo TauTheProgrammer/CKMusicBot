@@ -11,7 +11,7 @@ from .cogs.voice_channel_cog import VoiceChannelCog
 from .cogs.music_cog import MusicCog
 
 load_dotenv()
-_log = logging.getLogger(__name__)
+__log = logging.getLogger(__name__)
 
 
 class DiscordBot(Bot):
@@ -41,12 +41,12 @@ class DiscordBot(Bot):
         await self.add_cog(MusicCog(self), guild=CK_GUILD)
 
         # TODO: Optimize cache
-        _log.info("Logged on as %s", self.user)
+        __log.info("Logged on as %s", self.user)
         await self.ensure_application_configuration()
         await self.wait_until_ready()
         should_sync_commands: str | None = os.getenv("SHOULD_SYNC_COMMANDS")
         if should_sync_commands == "1" and not self.__synced:
-            _log.info("Syncing commands")
+            __log.info("Syncing commands")
             await self.tree.sync(guild=CK_GUILD)
             self.__synced = True
 
@@ -58,6 +58,8 @@ class DiscordBot(Bot):
         #     and isinstance(args[0].interaction, Interaction)
         # ):
         # TODO: log command names and arguments/values
+        if event_name == "interaction":
+            __log.info("")
         super().dispatch(event_name, *args, **kwargs)
 
     def run(self):
@@ -77,7 +79,7 @@ class DiscordBot(Bot):
             application_info.flags.gateway_guild_members_limited is False
             or application_info.flags.gateway_message_content_limited is False
         ):
-            _log.error("Discord App not configured for message content")
+            __log.error("Discord App not configured for message content")
 
     async def is_command_in_bot_channel(self, ctx: Context) -> bool:
         is_command_in_bot_channel: bool = ctx.channel.id == CK_BOT_CHANNEL_ID

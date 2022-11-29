@@ -6,7 +6,7 @@ from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 from spotipy.client import Spotify
 from ck_bot.utils.types import SpotifyQuery
 
-logger = logging.getLogger(__name__)
+__log = logging.getLogger(__name__)
 
 
 class CKSpotifyClient(Spotify):
