@@ -1,17 +1,13 @@
-from __future__ import annotations
-import os
 import logging
 from typing import Any
 from discord.ext.commands.bot import Bot, Context
 from discord import AppInfo, Intents
-from dotenv import load_dotenv
 from .utils.color_formatter import ColorFormatter
-from .utils.constants import CK_GUILD, CK_BOT_CHANNEL_ID
+from .utils.constants import CK_GUILD, CK_BOT_CHANNEL_ID, CONFIG
 from .cogs.voice_channel_cog import VoiceChannelCog
 from .cogs.music_cog import MusicCog
 
-load_dotenv()
-__log = logging.getLogger(__name__)
+_log = logging.getLogger(__name__)
 
 
 class DiscordBot(Bot):
@@ -37,16 +33,16 @@ class DiscordBot(Bot):
         self.check(self.is_command_in_bot_channel)
 
     async def on_ready(self) -> None:
-        await self.add_cog(VoiceChannelCog(self), guild=CK_GUILD)
-        await self.add_cog(MusicCog(self), guild=CK_GUILD)
+        if len(self.cogs.values()) == 0:
+            await self.add_cog(VoiceChannelCog(self), guild=CK_GUILD)
+            await self.add_cog(MusicCog(self), guild=CK_GUILD)
 
         # TODO: Optimize cache
-        __log.info("Logged on as %s", self.user)
+        _log.info("Logged on as %s", self.user)
         await self.ensure_application_configuration()
         await self.wait_until_ready()
-        should_sync_commands: str | None = os.getenv("SHOULD_SYNC_COMMANDS")
-        if should_sync_commands == "1" and not self.__synced:
-            __log.info("Syncing commands")
+        if CONFIG.SHOULD_SYNC_COMMANDS == "1" and not self.__synced:
+            _log.info("Syncing commands")
             await self.tree.sync(guild=CK_GUILD)
             self.__synced = True
 
@@ -59,27 +55,25 @@ class DiscordBot(Bot):
         # ):
         # TODO: log command names and arguments/values
         if event_name == "interaction":
-            __log.info("")
+            _log.info("")
         super().dispatch(event_name, *args, **kwargs)
 
     def run(self):
-        client_token = os.getenv("CLIENT_TOKEN")
-        if client_token is None:
-            raise TypeError("Discord bot token undefined")
         super().run(
-            client_token,
+            CONFIG.DISCORD_CLIENT_TOKEN,
             log_handler=logging.StreamHandler(),
             log_formatter=ColorFormatter(),
             log_level=logging.DEBUG,
         )
 
     async def ensure_application_configuration(self) -> None:
+        # TODO: Properly verify all flags are exactly as they should be
         application_info: AppInfo = await self.application_info()
         if (
             application_info.flags.gateway_guild_members_limited is False
             or application_info.flags.gateway_message_content_limited is False
         ):
-            __log.error("Discord App not configured for message content")
+            _log.error("Discord App not configured for message content")
 
     async def is_command_in_bot_channel(self, ctx: Context) -> bool:
         is_command_in_bot_channel: bool = ctx.channel.id == CK_BOT_CHANNEL_ID

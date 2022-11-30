@@ -1,29 +1,22 @@
-from __future__ import annotations
-import os
 import logging
-from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyClientCredentials, SpotifyOAuth
 from spotipy.client import Spotify
+from ck_bot.utils.constants import CONFIG
 from ck_bot.utils.types import SpotifyQuery
 
-__log = logging.getLogger(__name__)
+_log = logging.getLogger(__name__)
 
 
 class CKSpotifyClient(Spotify):
-    _instance = None
-    _client_id = os.getenv("SPOTIPY_CLIENT_ID")
-    _client_secret = os.getenv("SPOTIPY_CLIENT_SECRET")
-    _redirect_uri = os.getenv("SPOTIPY_REDIRECT_URI")
-    _scope = os.getenv("SPOTIPY_SCOPE")
-    _username = os.getenv("SPOTIFY_USERNAME")
+    __instance = None
+    # TODO: Fix these, they're ugly
 
     def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super(CKSpotifyClient, cls).__new__(cls)
-        return cls._instance
+        if cls.__instance is None:
+            cls.__instance = super(CKSpotifyClient, cls).__new__(cls)
+        return cls.__instance
 
     def __init__(self) -> None:
-        load_dotenv()
         oauth: SpotifyOAuth = self.__get_auth()
         access_token: str = oauth.get_access_token(as_dict=False)
         # TODO: auth_manager AND client_credentials_manager needed?  They are same thing
@@ -37,20 +30,24 @@ class CKSpotifyClient(Spotify):
 
     # TODO Investigate using SpotifyPKCE for Authorization Code Flow
     def __get_auth(self) -> SpotifyOAuth:
+        # TODO Double check all these properties are needed
         return SpotifyOAuth(
-            client_id=self._client_id,
-            client_secret=self._client_secret,
-            redirect_uri=self._redirect_uri,
-            scope=self._scope,
-            username=self._username,
+            client_id=CONFIG.SPOTIPY_CLIENT_ID,
+            client_secret=CONFIG.SPOTIPY_CLIENT_SECRET,
+            redirect_uri=CONFIG.SPOTIPY_REDIRECT_URI,
+            scope=CONFIG.SPOTIPY_SCOPE,
+            username=CONFIG.SPOTIFY_USERNAME,
             open_browser=True,
         )
 
     def __get_client_credentials_manager(self) -> SpotifyClientCredentials:
         return SpotifyClientCredentials(
-            client_id=self._client_id, client_secret=self._client_secret
+            client_id=CONFIG.SPOTIPY_CLIENT_ID,
+            client_secret=CONFIG.SPOTIPY_CLIENT_SECRET,
         )
 
     # TODO type the return
     def search(self, query: SpotifyQuery):
-        ret = super().search(query.spotify_query, limit=query.limit)
+        _log.info("")
+        # super().search()
+        # ret = super().search(query.spotify_query, limit=query.limit)

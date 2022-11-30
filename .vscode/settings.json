@@ -2,18 +2,23 @@
   "python.analysis.autoImportCompletions": true,
   "python.analysis.completeFunctionParens": true,
   "python.analysis.diagnosticMode": "workspace",
-  "python.analysis.inlayHints.functionReturnTypes": true,
-  "python.analysis.inlayHints.variableTypes": true,
+  "python.analysis.inlayHints.functionReturnTypes": false,
+  "python.analysis.inlayHints.variableTypes": false,
   "python.analysis.logLevel": "Trace",
   "python.analysis.typeCheckingMode": "basic",
   "python.formatting.provider": "black",
   "python.languageServer": "Pylance",
   "python.linting.pylintEnabled": true,
   "python.terminal.activateEnvInCurrentTerminal": true,
-  "sonarlint.connectedMode.project": {
-    "connectionId": "CKMusicBot",
-    "projectKey": "CKMusicBot"
-  },
   "python.linting.mypyEnabled": false,
-  "editor.renderWhitespace": "all"
+  "editor.renderWhitespace": "all",
+  "sonarlint.output.showVerboseLogs": true,
+  "sonarlint.output.showAnalyzerLogs": true,
+  "sonarlint.connectedMode.project": {
+    "connectionId": "http-localhost-9000",
+    "projectKey": "CoolKidsSlashBot"
+  },
+  "sonarlint.analyzerProperties": {
+    "sonar.python.version": "3.10"
+  }
 }

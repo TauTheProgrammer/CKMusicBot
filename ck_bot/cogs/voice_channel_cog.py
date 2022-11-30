@@ -1,4 +1,3 @@
-from __future__ import annotations
 import logging
 from discord.voice_client import VoiceClient
 from discord.channel import VoiceChannel
@@ -6,7 +5,7 @@ from discord import Member, app_commands, Interaction
 
 from ck_bot.cogs.base_cog import BaseCog
 
-__log = logging.getLogger(__name__)
+_log = logging.getLogger(__name__)
 
 
 class VoiceChannelCog(BaseCog):
@@ -14,8 +13,8 @@ class VoiceChannelCog(BaseCog):
 
     @app_commands.command(name="join", description="Join voice channel")
     async def join(self, interaction: Interaction) -> None:
-        __log.info("Join called")
-        if len(self._bot.voice_clients) == 0:
+        _log.info("Join called")
+        if len(self.bot.voice_clients) == 0:
             member: Member = interaction.user  # type: ignore
             if member.voice is None:
                 await interaction.response.send_message(
@@ -31,9 +30,9 @@ class VoiceChannelCog(BaseCog):
 
     @app_commands.command(name="leave", description="Leave voice channel")
     async def leave(self, interaction: Interaction) -> None:
-        __log.info("Leave called")
-        if len(self._bot.voice_clients) != 0:
-            voice_client: VoiceClient = self._bot.voice_clients[0]  # type: ignore
+        _log.info("Leave called")
+        if len(self.bot.voice_clients) != 0:
+            voice_client: VoiceClient = self.bot.voice_clients[0]  # type: ignore
             await voice_client.disconnect()
         else:
             await interaction.response.send_message("I am not in a voice channel")

@@ -8,17 +8,24 @@ class ListEnum(Enum):
         return list(map(lambda c: c.value, cls))
 
 
-class MediaType(ListEnum):
+class MediaTypes(ListEnum):
+    SONG = "track"
     ALBUM = "album"
-    ARTIST = "artist"
     PLAYLIST = "playlist"
-    TRACK = "track"
-    SHOW = "show"
-    EPISODE = "episode"
-    AUDIOBOOK = "audiobook"
+    LINK = "link"
 
 
 class SpotifyQuery(NamedTuple):
     spotify_query: str
     spotify_query_type: str
     limit: int
+
+
+class EnvDict(NamedTuple):
+    DISCORD_CLIENT_TOKEN: str
+    SHOULD_SYNC_COMMANDS: str
+    SPOTIPY_CLIENT_ID: str
+    SPOTIPY_CLIENT_SECRET: str
+    SPOTIPY_REDIRECT_URI: str
+    SPOTIPY_SCOPE: str
+    SPOTIFY_USERNAME: str

@@ -10,11 +10,14 @@ from ck_bot.utils.constants import CK_GUILD
 @app_commands.guilds(CK_GUILD)
 class BaseCog(Cog):
     __instance = None
+    __bot: Bot
 
     def __new__(cls, *args: Any, **kwargs: Any):
         if cls.__instance is None:
             cls.__instance = super(BaseCog, cls).__new__(cls)
+            cls.__bot = args[0]
         return cls.__instance
 
-    def __init__(self, bot: Bot):
-        self._bot = bot
+    @property
+    def bot(self):
+        return self.__bot
