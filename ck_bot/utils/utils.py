@@ -9,7 +9,6 @@ def parse_env_file() -> EnvDict:
     config: EnvDict = EnvDict(
         LOG_LEVEL_ROOT=int(env_vars["LOG_LEVEL_ROOT"]),
         LOG_LEVEL_CK=int(env_vars["LOG_LEVEL_CK"]),
-        LOG_LEVEL_DISCORD=int(env_vars["LOG_LEVEL_DISCORD"]),
         DISCORD_CLIENT_TOKEN=env_vars["DISCORD_CLIENT_TOKEN"],
         SHOULD_SYNC_COMMANDS=env_vars["SHOULD_SYNC_COMMANDS"],
         INACTIVITY_TIMEOUT_SECONDS=int(env_vars["INACTIVITY_TIMEOUT_SECONDS"]),
