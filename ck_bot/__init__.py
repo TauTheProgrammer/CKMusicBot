@@ -1,4 +1,6 @@
 import logging
+from discord.utils import _ColourFormatter
+from ck_bot.utils.constants import CONFIG
 
 
 class ColorFormatter(logging.Formatter):
@@ -9,26 +11,18 @@ class ColorFormatter(logging.Formatter):
         (logging.ERROR, "\x1b[31m"),
         (logging.CRITICAL, "\x1b[41m"),
     ]
-    FORMATS = {
+    FORMAT = {
         level: logging.Formatter(
-            f"\x1b[30;1m%(asctime)s\x1b[0m {colour}%(levelname)-8s\x1b[0m \x1b[35m%(name)s\x1b[0m %(message)s",
-            "%Y-%m-%d %H:%M:%S",
-        )
-        for level, colour in LEVEL_COLOURS
-    }
-    CKFORMAT = {
-        level: logging.Formatter(
-            f"\x1b[30;1m%(asctime)s\x1b[0m {colour}%(levelname)-8s\x1b[0m \x1b[36m%(name)s\x1b[0m %(message)s",
+            f"\x1b[30;1m%(asctime)s\x1b[0m {colour}%(levelname)-8s\x1b[0m \x1b[1;38;5;43m%(name)s\x1b[1;38;5;43m %(message)s",
             "%Y-%m-%d %H:%M:%S",
         )
         for level, colour in LEVEL_COLOURS
     }
 
     def format(self, record):
-        f = self.FORMATS if "Lib" in record.pathname else self.CKFORMAT
-        formatter = f.get(record.levelno)
+        formatter = self.FORMAT.get(record.levelno)
         if formatter is None:
-            formatter = self.FORMATS[logging.DEBUG]
+            formatter = self.FORMAT[logging.DEBUG]
 
         # Override the traceback to always print in red
         if record.exc_info:
@@ -42,8 +36,9 @@ class ColorFormatter(logging.Formatter):
         return output
 
 
-logger = logging.getLogger()
+library, _, _ = __name__.partition(".")
+ck_logger = logging.getLogger(library)
 handler = logging.StreamHandler()
 handler.setFormatter(ColorFormatter())
-logger.setLevel(logging.NOTSET)
-logger.addHandler(handler)
+ck_logger.setLevel(CONFIG.LOG_LEVEL_CK)
+ck_logger.addHandler(handler)

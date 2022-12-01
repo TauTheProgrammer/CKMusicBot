@@ -9,7 +9,7 @@ class ListEnum(Enum):
 
 
 class MediaTypes(ListEnum):
-    SONG = "track"
+    TRACK = "track"
     ALBUM = "album"
     PLAYLIST = "playlist"
     LINK = "link"
@@ -22,6 +22,9 @@ class SpotifyQuery(NamedTuple):
 
 
 class EnvDict(NamedTuple):
+    LOG_LEVEL_ROOT: int
+    LOG_LEVEL_CK: int
+    LOG_LEVEL_DISCORD: int
     DISCORD_CLIENT_TOKEN: str
     SHOULD_SYNC_COMMANDS: str
     INACTIVITY_TIMEOUT_SECONDS: int
@@ -30,3 +33,4 @@ class EnvDict(NamedTuple):
     SPOTIPY_REDIRECT_URI: str
     SPOTIPY_SCOPE: str
     SPOTIFY_USERNAME: str
+    FF_VOICE: int

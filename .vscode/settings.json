@@ -20,5 +20,6 @@
   },
   "sonarlint.analyzerProperties": {
     "sonar.python.version": "3.10"
-  }
+  },
+  "debug.terminal.clearBeforeReusing": true
 }

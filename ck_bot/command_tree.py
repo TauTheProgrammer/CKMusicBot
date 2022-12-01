@@ -28,4 +28,4 @@ class BotChannelCommandtree(CommandTree):
         namespace_iterator = iter(interaction.namespace)
         for key_pair in namespace_iterator:
             user_input += key_pair[0] + "=" + key_pair[1] + ","
-        _log.info("Command {%s} called with {%s}", command.name, user_input)
+        _log.debug("Command {%s} called with {%s}", command.name, user_input)

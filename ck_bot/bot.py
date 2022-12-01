@@ -46,9 +46,12 @@ class DiscordBot(Bot):
         await self.ensure_application_configuration()
         await self.wait_until_ready()
         if CONFIG.SHOULD_SYNC_COMMANDS == "1" and not self.__synced:
-            _log.info("Syncing commands")
+            _log.debug("Syncing commands")
             await self.tree.sync(guild=CK_GUILD)
             self.__synced = True
+        _log.info("#####################")
+        _log.info("Cool Kids / Bot Ready")
+        _log.info("#####################")
 
     async def ensure_application_configuration(self) -> None:
         # TODO: Properly verify all flags are exactly as they should be and log exactly what is out of place
