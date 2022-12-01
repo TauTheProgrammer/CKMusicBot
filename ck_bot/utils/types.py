@@ -24,6 +24,7 @@ class SpotifyQuery(NamedTuple):
 class EnvDict(NamedTuple):
     DISCORD_CLIENT_TOKEN: str
     SHOULD_SYNC_COMMANDS: str
+    INACTIVITY_TIMEOUT_SECONDS: int
     SPOTIPY_CLIENT_ID: str
     SPOTIPY_CLIENT_SECRET: str
     SPOTIPY_REDIRECT_URI: str

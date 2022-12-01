@@ -1,69 +1,57 @@
-import logging
 from discord import app_commands, Interaction
+from discord.ext.commands import Bot
 from ck_bot.cogs.base_cog import BaseCog
-from ck_bot.spotify.client import CKSpotifyClient
-
-_log = logging.getLogger(__name__)
+from ck_bot.services.music_service import MusicService
 
 
 class MusicCog(BaseCog):
-    @app_commands.command(
-        name="play", description="Play a song, album, playlist, or link"
-    )
-    @app_commands.describe(
-        media="name of what you want to play",
-    )
+    __music_service: MusicService
+
+    def __init__(self, bot: Bot):
+        self.__music_service = MusicService(bot)
+
+    # @app_commands.command(name="join", description="Join voice channel")
+    # async def join(self, interaction: Interaction) -> None:
+    #     # _log.info("Join called")
+    #     if len(self.bot.voice_clients) == 0:
+    #         member: Member = interaction.user  # type: ignore
+    #         if member.voice is None:
+    #             await interaction.response.send_message(
+    #                 "You must first join a voice channel", ephemeral=True
+    #             )
+    #         else:
+    #             voice_channel: VoiceChannel = member.voice.channel  # type: ignore
+    #             await voice_channel.connect()
+    #     else:
+    #         await interaction.response.send_message(
+    #             "I am already in another voice channel", ephemeral=True
+    #         )
+
+    # @app_commands.command(name="leave", description="Leave voice channel")
+    # async def leave(self, interaction: Interaction) -> None:
+    #     # _log.info("Leave called")
+    #     if len(self.bot.voice_clients) != 0:
+    #         voice_client: VoiceClient = self.bot.voice_clients[0]  # type: ignore
+    #         await voice_client.disconnect()
+    #     else:
+    #         await interaction.response.send_message("I am not in a voice channel")
+
+    @app_commands.command(description="Play a song, album, playlist, or link")
+    @app_commands.describe(media="name of what you want to play")
     async def play(self, interaction: Interaction, media: str) -> None:
-        client = CKSpotifyClient()
-        # client.search()
+        self.__music_service.play(interaction, media)
 
-    # @_bot.group()
+    @app_commands.command(description="Insert a song into the top of the queue")
+    @app_commands.describe(media="name of what you want to insert")
+    async def insert(self, interaction: Interaction, media: str) -> None:
+        self.__music_service.insert(interaction, media)
 
-    # class PlayGroup(app_commands.Group):
-    #     pass
+    @app_commands.command(description="Skip current song")
+    async def skip(self, interaction: Interaction) -> None:
+        self.__music_service.skip(interaction)
 
-    # @PlayGroup.
+    @app_commands.command(description="Clear the queue")
+    async def clear(self, interaction: Interaction) -> None:
+        self.__music_service.clear(interaction)
 
-    # @hybrid_command(
-    #     description="Play a Song, Album, Playlist, Episode, Link, whatever!"
-    # )
-    # @describe(
-    #     track="Track name",
-    #     artist="Artist name",
-    #     link="Copied link",
-    # )
-    # @guilds(CK_GUILD)
-    # async def play(
-    #     self,
-    #     ctx: Context,
-    #     track: str,
-    #     artist: Optional[str],
-    #     album: Optional[str],
-    #     link: Optional[str],
-    # ) -> None:
-    #     # TODO: handle link
-    #     query_builder: SpotifyQueryBuilder = SpotifyQueryBuilder(track).add_limit(1)
-    #     if artist:
-    #         query_builder.with_artist(artist)
-    #     if album:
-    #         query_builder.with_album(album)
-    #     self._spotify_client.search(query_builder.build())
-    #     _log.info("Play called")
-
-    # @hybrid_command(description="Skip whatever is currently playing")
-    # @guilds(CK_GUILD)
-    # async def skip(self, ctx: Context) -> None:
-    #     _log.info("Skip called")
-
-    # @hybrid_command(description="Insert a song at the top of the queue")
-    # @describe(playable="Song, Album, Playlist, Episodes, Links, whatever!")
-    # @guilds(CK_GUILD)
-    # async def insert(self, ctx: Context, playable: str) -> None:
-    #     _log.info("Insert called")
-
-    # @hybrid_command(
-    #     description="Undo last command, if it has not already been processed"
-    # )
-    # @guilds(CK_GUILD)
-    # async def undo(self, ctx: Context) -> None:
-    #     _log.info("Undo called")
+    # TODO Implement Undo?

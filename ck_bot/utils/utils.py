@@ -9,6 +9,7 @@ def parse_env_file() -> EnvDict:
     config: EnvDict = EnvDict(
         DISCORD_CLIENT_TOKEN=env_vars["DISCORD_CLIENT_TOKEN"],
         SHOULD_SYNC_COMMANDS=env_vars["SHOULD_SYNC_COMMANDS"],
+        INACTIVITY_TIMEOUT_SECONDS=int(env_vars["INACTIVITY_TIMEOUT_SECONDS"]),
         SPOTIPY_CLIENT_ID=env_vars["SPOTIPY_CLIENT_ID"],
         SPOTIPY_CLIENT_SECRET=env_vars["SPOTIPY_CLIENT_SECRET"],
         SPOTIPY_REDIRECT_URI=env_vars["SPOTIPY_REDIRECT_URI"],

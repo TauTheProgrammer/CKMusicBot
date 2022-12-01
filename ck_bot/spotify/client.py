@@ -7,13 +7,13 @@ from ck_bot.utils.types import SpotifyQuery
 _log = logging.getLogger(__name__)
 
 
-class CKSpotifyClient(Spotify):
+class SpotifyClient(Spotify):
     __instance = None
     # TODO: Fix these, they're ugly
 
     def __new__(cls):
         if cls.__instance is None:
-            cls.__instance = super(CKSpotifyClient, cls).__new__(cls)
+            cls.__instance = super(SpotifyClient, cls).__new__(cls)
         return cls.__instance
 
     def __init__(self) -> None:
@@ -21,7 +21,7 @@ class CKSpotifyClient(Spotify):
         access_token: str = oauth.get_access_token(as_dict=False)
         # TODO: auth_manager AND client_credentials_manager needed?  They are same thing
         # TODO: Need to ensure with auth_manager that higher rate limit is applied (https://spotipy.readthedocs.io/en/2.21.0/#client-credentials-flow)
-        super(CKSpotifyClient, self).__init__(
+        super(SpotifyClient, self).__init__(
             auth=access_token,
             auth_manager=self.__get_client_credentials_manager(),
             client_credentials_manager=self.__get_client_credentials_manager(),
@@ -46,8 +46,14 @@ class CKSpotifyClient(Spotify):
             client_secret=CONFIG.SPOTIPY_CLIENT_SECRET,
         )
 
-    # TODO type the return
-    def search(self, query: SpotifyQuery):
+    def process_link(self, link: str) -> str:
         _log.info("")
-        # super().search()
-        # ret = super().search(query.spotify_query, limit=query.limit)
+        return ""
+
+    # TODO type the return
+    def search(self, search_str: str) -> str:
+        ret = super().search(search_str, type="track", limit=1)
+        if isinstance(ret, str):
+            return ret
+        else:
+            return ""  # TODO handle this
