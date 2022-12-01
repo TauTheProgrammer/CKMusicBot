@@ -12,6 +12,9 @@ class DiscordBot(Bot):
     __instance = None
     __synced: bool = False
 
+    #########################################
+    # Constructors
+    #########################################
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super(DiscordBot, cls).__new__(cls)
@@ -32,6 +35,9 @@ class DiscordBot(Bot):
             tree_cls=BotChannelCommandtree,
         )
 
+    #########################################
+    # Public API
+    #########################################
     async def on_ready(self) -> None:
         if len(self.cogs.values()) == 0:
             await self.add_cog(MusicCog(self), guild=CK_GUILD)
@@ -45,7 +51,7 @@ class DiscordBot(Bot):
             self.__synced = True
 
     async def ensure_application_configuration(self) -> None:
-        # TODO: Properly verify all flags are exactly as they should be
+        # TODO: Properly verify all flags are exactly as they should be and log exactly what is out of place
         application_info: AppInfo = await self.application_info()
         if (
             application_info.flags.gateway_guild_members_limited is False

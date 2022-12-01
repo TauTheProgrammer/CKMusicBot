@@ -11,6 +11,9 @@ class SpotifyClient(Spotify):
     __instance = None
     # TODO: Fix these, they're ugly
 
+    #########################################
+    # Constructors
+    #########################################
     def __new__(cls):
         if cls.__instance is None:
             cls.__instance = super(SpotifyClient, cls).__new__(cls)
@@ -28,6 +31,24 @@ class SpotifyClient(Spotify):
             oauth_manager=oauth,
         )
 
+    #########################################
+    # Public API
+    #########################################
+    def process_link(self, link: str) -> str:
+        _log.info("")
+        return ""
+
+    # TODO type the return
+    def search(self, search_str: str) -> str:
+        ret = super().search(search_str, type="track", limit=1)
+        if isinstance(ret, str):
+            return ret
+        else:
+            return ""  # TODO handle this
+
+    #########################################
+    # Private Helper Functions
+    #########################################
     # TODO Investigate using SpotifyPKCE for Authorization Code Flow
     def __get_auth(self) -> SpotifyOAuth:
         # TODO Double check all these properties are needed
@@ -45,15 +66,3 @@ class SpotifyClient(Spotify):
             client_id=CONFIG.SPOTIPY_CLIENT_ID,
             client_secret=CONFIG.SPOTIPY_CLIENT_SECRET,
         )
-
-    def process_link(self, link: str) -> str:
-        _log.info("")
-        return ""
-
-    # TODO type the return
-    def search(self, search_str: str) -> str:
-        ret = super().search(search_str, type="track", limit=1)
-        if isinstance(ret, str):
-            return ret
-        else:
-            return ""  # TODO handle this

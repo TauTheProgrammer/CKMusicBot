@@ -7,6 +7,9 @@ _log = logging.getLogger(__name__)
 
 # TODO Do not leave any trace of commands in Bot Channel (i.e. The application did not respond)
 class BotChannelCommandtree(CommandTree):
+    #########################################
+    # Public API
+    #########################################
     async def interaction_check(self, interaction: Interaction, /) -> bool:
         self.__log_interaction(interaction)
         pass_check: bool = interaction.channel.id == CK_BOT_CHANNEL_ID  # type:ignore
@@ -16,6 +19,9 @@ class BotChannelCommandtree(CommandTree):
             )
         return pass_check
 
+    #########################################
+    # Private Helper Functions
+    #########################################
     def __log_interaction(self, interaction: Interaction):
         command: Command = interaction.command  # type: ignore
         user_input = ""
