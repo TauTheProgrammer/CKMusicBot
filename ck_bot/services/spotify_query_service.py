@@ -6,12 +6,13 @@ from spotipy.client import Spotify
 from .. import utils
 from ..constants import CONFIG
 from ..types.spotipy import MediaTypes
+from ..types.singleton import Singleton
 from .base.query_service import QueryService
 
 _log = logging.getLogger(__name__)
 
 
-class SpotifyQueryService(QueryService):
+class SpotifyQueryService(QueryService, Singleton):
     # TODO Lazy initialize
     # TODO Uninitialize after inactivity
     __spotipy: Spotify

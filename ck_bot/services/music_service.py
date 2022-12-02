@@ -71,9 +71,10 @@ class MusicService(Singleton):
     async def __get_search_results(self, media: str) -> List[str] | str:
         if not utils.is_youtube_link(media):
             return self.__spotify_query_service.query(media)
+        # elif utils.is_youtube_single(media):
         # x: List[str] | str = await self.__youtube.fetch_metadata(media)
         # return await self.__youtube.fetch(x)
-        return ""
+        return self.__spotify_query_service.query(media)
 
     async def __join(self, interaction: Interaction) -> None:
         if CONFIG.FF_VOICE:

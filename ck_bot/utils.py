@@ -26,6 +26,7 @@ def parse_env_file() -> EnvDict:
 
 # TODO: Feel like this shouldn't belong here, the url regex related stuff
 __SPOTIFY_BASE_URL = "https:\\/\\/open.spotify.com\\/.*"
+__SPOTIFY_SINGLE_VIDEO_URL = "https:\/\/www.youtube.com/watch\?v=([a-zA-Z0-9]*)(?!&)"
 __SPOTIFY_URL = "https:\\/\\/open.spotify.com\\/(track|album|playlist)\\/(.+?(?=\\?))"
 __YOUTUBE_BASE_URL = "https:\\/\\/www.youtube.com\\/.*"
 

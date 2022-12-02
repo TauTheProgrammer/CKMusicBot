@@ -10,7 +10,7 @@ TODO: Document commands, or use a script to auto-generate them on commit.
 
 ## Setup
 
-TODO: Document
+TODO: Install dependencies with pipenv
 
 ### Environment Variables
 

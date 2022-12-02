@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+"discord.py" = {extras = ["voice"], version = "*"}
+pylint = "*"
+spotipy = "*"
+python-dotenv = "*"
+black = "*"
+pytest = "*"
+yt-dlp = "*"
+google-api-python-client = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"

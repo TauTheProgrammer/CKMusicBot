@@ -21,5 +21,10 @@
   "sonarlint.analyzerProperties": {
     "sonar.python.version": "3.10"
   },
-  "debug.terminal.clearBeforeReusing": true
+  "debug.terminal.clearBeforeReusing": true,
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }
