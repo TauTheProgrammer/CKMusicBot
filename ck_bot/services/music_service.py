@@ -1,20 +1,24 @@
 import logging
 from typing import List
-from discord import Interaction
+from discord import Interaction, VoiceClient, Member, VoiceChannel
 from discord.ext.commands import Bot
-from discord import VoiceClient, Member, VoiceChannel
-from ck_bot.spotify.client import SpotifyClient
-from ck_bot.utils.constants import CONFIG
-from ck_bot.youtube.client import YoutubeClient
-from ck_bot.utils import url_utils
+
+from ..types.singleton import Singleton
+from ..constants import CONFIG
+from ..youtube.client import YoutubeClient
+from .. import utils
+
+from .spotify_query_service import SpotifyQueryService
+from .youtube_query_service import YoutubeQueryService
 
 _log = logging.getLogger(__name__)
 
 
-class MusicService:
+class MusicService(Singleton):
     # TODO Lazy initialize
     # TODO Uninitialize after inactivity
-    __spotify: SpotifyClient = SpotifyClient()
+    __spotify_query_service: SpotifyQueryService = SpotifyQueryService()
+    __youtube_query_service: YoutubeQueryService = YoutubeQueryService()
     # TODO Lazy initialize
     # TODO Uninitialize after inactivity
     __youtube: YoutubeClient = YoutubeClient()
@@ -40,11 +44,11 @@ class MusicService:
     async def play(self, interaction: Interaction, media: str) -> None:
         if not self.__is_bot_in_voice_channel():
             await self.__join(interaction)
-        search_results: List[str] | str = self.__get_search_results(media)
+        search_results: List[str] | str = await self.__get_search_results(media)
         print()
 
-    def insert(self, interaction: Interaction, media: str) -> None:
-        search_results: List[str] | str = self.__get_search_results(media)
+    async def insert(self, interaction: Interaction, media: str) -> None:
+        search_results: List[str] | str = await self.__get_search_results(media)
 
     def skip(self, interaction: Interaction) -> None:
         _log.info("")
@@ -64,11 +68,12 @@ class MusicService:
     #########################################
     # Private Helper Functions
     #########################################
-    def __get_search_results(self, media: str) -> List[str] | str:
-        if not url_utils.is_youtube_link(media):
-            return self.__spotify.get_results(media)
-        # TODO IS youtube link
-        return media
+    async def __get_search_results(self, media: str) -> List[str] | str:
+        if not utils.is_youtube_link(media):
+            return self.__spotify_query_service.query(media)
+        # x: List[str] | str = await self.__youtube.fetch_metadata(media)
+        # return await self.__youtube.fetch(x)
+        return ""
 
     async def __join(self, interaction: Interaction) -> None:
         if CONFIG.FF_VOICE:

@@ -9,7 +9,7 @@ class LoggingColorFormatter(logging.Formatter):
         (logging.ERROR, "\x1b[31m"),
         (logging.CRITICAL, "\x1b[41m"),
     ]
-    FORMAT = {
+    LOG_FORMAT = {
         level: logging.Formatter(
             f"\x1b[30;1m%(asctime)s\x1b[0m {colour}%(levelname)-8s\x1b[0m \x1b[1;38;5;43m%(name)s\x1b[1;38;5;43m %(message)s",
             "%Y-%m-%d %H:%M:%S",
@@ -18,9 +18,9 @@ class LoggingColorFormatter(logging.Formatter):
     }
 
     def format(self, record):
-        formatter = self.FORMAT.get(record.levelno)
+        formatter = self.LOG_FORMAT.get(record.levelno)
         if formatter is None:
-            formatter = self.FORMAT[logging.DEBUG]
+            formatter = self.LOG_FORMAT[logging.DEBUG]
 
         # Override the traceback to always print in red
         if record.exc_info:

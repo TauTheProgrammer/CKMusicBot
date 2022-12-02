@@ -1,11 +1,13 @@
 import logging
 from discord.app_commands import CommandTree, Command
 from discord import Interaction
-from ck_bot.utils.constants import CK_BOT_CHANNEL_ID
+
+from .constants import CK_BOT_CHANNEL_ID
 
 _log = logging.getLogger(__name__)
 
 # TODO Do not leave any trace of commands in Bot Channel (i.e. The application did not respond)
+# TODO Do I really need a class just for a global check and interactions?
 class BotChannelCommandtree(CommandTree):
     #########################################
     # Public API

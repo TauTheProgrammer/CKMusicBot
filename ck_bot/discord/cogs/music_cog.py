@@ -1,10 +1,12 @@
 from discord import app_commands, Interaction
 from discord.ext.commands import Bot
-from ck_bot.cogs.base_cog import BaseCog
-from ck_bot.services.music_service import MusicService
+
+from ...services.music_service import MusicService
+
+from .base.ck_cog import Cog
 
 
-class MusicCog(BaseCog):
+class MusicCog(Cog):
     __music_service: MusicService
 
     #########################################
@@ -25,7 +27,7 @@ class MusicCog(BaseCog):
     @app_commands.command(description="Insert a song into the top of the queue")
     @app_commands.describe(media="name of what you want to insert")
     async def insert(self, interaction: Interaction, media: str) -> None:
-        self.__music_service.insert(interaction, media)
+        await self.__music_service.insert(interaction, media)
 
     @app_commands.command(description="Skip current song")
     async def skip(self, interaction: Interaction) -> None:

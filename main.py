@@ -1,17 +1,17 @@
 import logging
 from discord.utils import _ColourFormatter
-from ck_bot.bot import DiscordBot
-from ck_bot.utils.logging_color_formatter import LoggingColorFormatter
-from ck_bot.utils.constants import CONFIG
+from ck_bot.discord.bot import DiscordBot
+from ck_bot.logging.logging_color_formatter import LoggingColorFormatter
+from ck_bot.constants import CONFIG
 
-
+# TODO Can I move this logger stuff to ck_bot.logging, maybe into __init__.py or something?
 # Root Logger
 logger = logging.getLogger()
 handler = logging.StreamHandler()
 handler.setFormatter(_ColourFormatter())
 logger.setLevel(CONFIG.LOG_LEVEL_ROOT)
 logger.addHandler(handler)
-
+# TODO Can I move this logger stuff to ck_bot.logging, maybe into __init__.py or something?
 # CK Logger
 ck_logger = logging.getLogger("ck_bot")
 ck_logger.propagate = False

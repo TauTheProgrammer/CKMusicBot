@@ -2,24 +2,23 @@ import logging
 from typing import Dict, List
 from spotipy.oauth2 import SpotifyOAuth
 from spotipy.client import Spotify
-from ck_bot.utils import url_utils
-from ck_bot.utils.constants import CONFIG
-from ck_bot.utils.types import MediaTypes
+
+from .. import utils
+from ..constants import CONFIG
+from ..types.spotipy import MediaTypes
+from .base.query_service import QueryService
 
 _log = logging.getLogger(__name__)
 
 
-class SpotifyClient(Spotify):
-    __instance = None
+class SpotifyQueryService(QueryService):
+    # TODO Lazy initialize
+    # TODO Uninitialize after inactivity
+    __spotipy: Spotify
 
     #########################################
     # Constructors
     #########################################
-    def __new__(cls):
-        if cls.__instance is None:
-            cls.__instance = super(SpotifyClient, cls).__new__(cls)
-        return cls.__instance
-
     def __init__(self) -> None:
         # TODO Investigate using SpotifyPKCE for Authorization Code Flow
         # TODO: Need to ensure with auth_manager that higher rate limit is applied (https://spotipy.readthedocs.io/en/2.21.0/#client-credentials-flow)
@@ -33,18 +32,18 @@ class SpotifyClient(Spotify):
             open_browser=True,
         )
         access_token: str = oauth.get_access_token(as_dict=False)
-        super().__init__(auth=access_token)
+        self.__spotipy = Spotify(auth=access_token)
 
     #########################################
-    # Public API
+    # Overrides
     #########################################
     # TODO: Ambitious, but consider creating types for possible returns of super().search()
-    def get_results(self, media: str) -> List[str] | str:
-        if url_utils.is_youtube_link(media):
+    def query(self, media: str) -> List[str] | str:
+        if utils.is_youtube_link(media):
             raise ValueError()
 
-        if url_utils.is_spotify_link(media):
-            groups = url_utils.get_spotify_link_identifiers(media)
+        if utils.is_spotify_link(media):
+            groups = utils.get_spotify_link_identifiers(media)
             media_type = groups[0]
             entity_id = groups[1]
             if media_type == MediaTypes.TRACK.value:
@@ -53,7 +52,7 @@ class SpotifyClient(Spotify):
                 return self.__get_album(entity_id)
             return self.__get_playlist(entity_id)
 
-        result: Dict = super().search(media, limit=1)  # type: ignore
+        result: Dict = self.__spotipy.search(media, limit=1)  # type: ignore
         if len(result["tracks"]["items"]) != 0:
             item: Dict = result["tracks"]["items"][0]
             return item["artists"][0]["name"] + " " + item["name"]
@@ -65,13 +64,13 @@ class SpotifyClient(Spotify):
     #########################################
     def __get_track(self, track_id: str) -> str:
         _log.debug("Loading track {%s}", track_id)
-        result: Dict = self.track(track_id)  # type: ignore
+        result: Dict = self.__spotipy.track(track_id)  # type: ignore
         return result["artists"][0]["name"] + " " + result["name"]
 
     def __get_album(self, album_id: str) -> List[str]:
         _log.debug("Loading album {%s}", album_id)
         results: List[str] = []
-        result: Dict = self.album(album_id)  # type: ignore
+        result: Dict = self.__spotipy.album(album_id)  # type: ignore
         artist = result["artists"][0]["name"]
         tracks: List = result["tracks"]["items"]
         for track in tracks:
@@ -81,7 +80,7 @@ class SpotifyClient(Spotify):
     def __get_playlist(self, playlist_id: str) -> List[str]:
         _log.debug("Loading playlist {%s}", playlist_id)
         results: List[str] = []
-        result: Dict = self.playlist(
+        result: Dict = self.__spotipy.playlist(
             playlist_id,
             fields="tracks",
         )  # type: ignore

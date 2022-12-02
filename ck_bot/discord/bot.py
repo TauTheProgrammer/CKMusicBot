@@ -1,8 +1,11 @@
 import logging
 from discord.ext.commands.bot import Bot
 from discord import AppInfo, Intents
+
+from .constants import CK_GUILD
+from ..constants import CONFIG
+
 from .command_tree import BotChannelCommandtree
-from .utils.constants import CK_GUILD, CONFIG
 from .cogs.music_cog import MusicCog
 
 _log = logging.getLogger(__name__)
