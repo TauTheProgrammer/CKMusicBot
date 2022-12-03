@@ -12,6 +12,7 @@ black = "*"
 pytest = "*"
 yt-dlp = "*"
 google-api-python-client = "*"
+sphinx = "*"
 
 [dev-packages]
 
