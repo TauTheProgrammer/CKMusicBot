@@ -1,1 +1,0 @@
-sonar-scanner.bat -D"sonar.python.version=3.11" -D"sonar.projectKey=CoolKidsSlashBot" -D"sonar.sources=ck_bot" -D"sonar.host.url=http://localhost:9000" -D"sonar.login=squ_5c97f7494b4f80fa946a854d2808c063d4a67b24"

@@ -19,7 +19,7 @@ def parse_env_file() -> EnvDict:
         SPOTIPY_SCOPE=env_vars["SPOTIPY_SCOPE"],
         SPOTIFY_USERNAME=env_vars["SPOTIFY_USERNAME"],
         YOUTUBE_DATA_API_V3_KEY=env_vars["YOUTUBE_DATA_API_V3_KEY"],
-        FF_VOICE=int(env_vars["FF_VOICE"]),
+        # FF_VOICE=int(env_vars["FF_VOICE"]),
     )
     return config
 

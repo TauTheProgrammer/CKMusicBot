@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ck_bot"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+discord-py = "^2.3.2"
+spotipy = "^2.24.0"
+python-dotenv = "^1.0.1"
+yt-dlp = "^2024.5.27"
+google-api-python-client = "^2.132.0"
+google-auth-httplib2 = "^0.2.0"
+google-auth-oauthlib = "^1.2.0"
+pynacl = "^1.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

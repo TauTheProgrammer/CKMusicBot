@@ -13,4 +13,4 @@ class EnvDict(NamedTuple):
     SPOTIPY_SCOPE: str
     SPOTIFY_USERNAME: str
     YOUTUBE_DATA_API_V3_KEY: str
-    FF_VOICE: int
+    # FF_VOICE: int
