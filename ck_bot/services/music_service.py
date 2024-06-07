@@ -45,7 +45,7 @@ class MusicService(Singleton):
         if not self.__is_bot_in_voice_channel():
             await self.__join(interaction)
         search_results: List[str] | str = await self.__get_search_results(media)
-        print()
+        print(search_results)
 
     async def insert(self, interaction: Interaction, media: str) -> None:
         search_results: List[str] | str = await self.__get_search_results(media)
@@ -77,7 +77,7 @@ class MusicService(Singleton):
         return self.__spotify_query_service.query(media)
 
     async def __join(self, interaction: Interaction) -> None:
-        if CONFIG.FF_VOICE:
+        if CONFIG.VOICE_ENABLED:
             member: Member = interaction.user  # type: ignore
             if member.voice is None:
                 await interaction.response.send_message(
